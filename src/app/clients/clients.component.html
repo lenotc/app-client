@@ -1,0 +1,67 @@
+<details-client [client]="clientSelected" *ngIf="clientSelected"></details-client>
+
+<div class="card border-primary mb-3">
+  <div class="card-header">Clients</div>
+
+  <div class="card-body text-primary">
+    <h5 class="card-title">List of Clients</h5>
+
+    <div class="my-2 text-left">
+      <button *ngIf="authService.hasRole('ROLE_ADMIN')" class="btn btn-primary" [routerLink]="['/clients/form']">Create Client</button>
+    </div>
+
+    <div class="alert alert-info" *ngIf="!clients">
+      There are no data :'/
+    </div>
+
+
+    <table class="table table-bordered table-striped" *ngIf="clients">
+      <thead>
+
+      <tr>
+        <th *ngIf="authService.hasRole('ROLE_USER')">#</th>
+        <th>Name</th>
+        <th>Alias</th>
+        <th>Email</th>
+        <th>Created</th>
+        <th *ngIf="authService.hasRole('ROLE_ADMIN')">Edit</th>
+        <th *ngIf="authService.hasRole('ROLE_ADMIN')">Delete</th>
+      </tr>
+
+      </thead>
+
+      <tbody>
+
+      <tr *ngFor="let client of clients">
+        <td>
+          <img (click)="openModal(client)"
+               *ngIf="client?.img"
+               src="http://localhost:8080/api/uploads/img/{{client.img}}"
+               alt="{{client.img}}"
+               class="img-thumbnail rounded"
+               style="width: 64px; cursor: pointer;">
+          <img (click)="openModal(client)"
+               *ngIf="!client?.img"
+               src="http://localhost:8080/images/no_user.png"
+               alt="No image"
+               class="img-thumbnail rounded"
+               style="width: 64px; cursor: pointer;">
+        </td>
+        <td>{{client.name}}</td>
+        <td>{{client.alias | uppercase}}</td>
+        <td>{{client.email}}</td>
+        <td>{{client.createAt | date:"EEEE dd, MMMM yyyy"}}</td>
+        <td *ngIf="authService.hasRole('ROLE_ADMIN')">
+          <button class="btn btn-primary" [routerLink]="['/clients/form', client.id]">Edit</button>
+        </td>
+        <td *ngIf="authService.hasRole('ROLE_ADMIN')">
+          <button class="btn btn-danger" (click)="delete(client)">Delete</button>
+        </td>
+      </tr>
+
+      </tbody>
+
+    </table>
+    <paginator [paginador]="paginator" *ngIf="paginator"></paginator>
+  </div>
+</div>

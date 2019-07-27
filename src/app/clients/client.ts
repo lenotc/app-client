@@ -1,4 +1,5 @@
 import {Region} from './region';
+import {Bill} from '../bills/model/bill';
 
 export class Client {
   id: number;
@@ -8,4 +9,5 @@ export class Client {
   email: string;
   img: string;
   region: Region;
+  bills: Bill[] = [];
 }

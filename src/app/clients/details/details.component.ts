@@ -1,11 +1,13 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {Client} from '../client';
 import {ClientService} from '../client.service';
-import {ActivatedRoute} from '@angular/router';
 import swal from 'sweetalert2';
 import {HttpEventType} from '@angular/common/http';
 import {ModalService} from './modal.service';
 import {AuthService} from '../../users/auth.service';
+import {BillService} from '../../bills/services/bill.service';
+import {Bill} from '../../bills/model/bill';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'details-client',
@@ -20,7 +22,8 @@ export class DetailsComponent implements OnInit {
 
   constructor(private clientService: ClientService,
               private modalService: ModalService,
-              private authService: AuthService) {
+              private authService: AuthService,
+              private billService: BillService) {
   }
 
   ngOnInit() {
@@ -62,5 +65,42 @@ export class DetailsComponent implements OnInit {
     this.modalService.closeModal();
     this.fileImg = null;
     this.progress = 0;
+  }
+
+  delete(bill: Bill): void {
+
+    swal.fire({
+      title: 'Are you sure?',
+      text: 'You won\'t be able to revert this!',
+      type: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, delete it!',
+      cancelButtonText: 'No, cancel!',
+      reverseButtons: true
+    }).then((result) => {
+      if (result.value) {
+        this.billService.delete(bill.id).subscribe(response => {
+
+            this.client.bills = this.client.bills.filter(cli => cli !== bill);
+
+            swal.fire(
+              'Deleted!',
+              'Bill has been deleted.',
+              'success'
+            );
+          }
+        );
+      } else if (
+        // Read more about handling dismissals
+        result.dismiss === Swal.DismissReason.cancel
+      ) {
+        swal.fire(
+          'Cancelled',
+          'Your imaginary file is safe :)',
+          'error'
+        );
+      }
+    });
+
   }
 }

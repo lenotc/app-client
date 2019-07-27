@@ -1,0 +1,63 @@
+<div class="card bg-light" *ngIf="bill">
+  <div class="card-header">Bill | {{bill.description}}</div>
+
+  <div class="card-body">
+    <h4 class="card-title">
+      <a [routerLink]="['/clients']" class="btn btn-light btn-sm">&laquo; Return</a>
+    </h4>
+
+    <ul class="list-group my-4">
+      <li class="list-group-item list-group-item-primary">Data of client</li>
+      <li class="list-group-item">{{bill.client.name}}</li>
+      <li class="list-group-item">{{bill.client.alias}}</li>
+    </ul>
+
+    <ul class="list-group my-4">
+      <li class="list-group-item list-group-item-primary">Data of the bill</li>
+      <li class="list-group-item"># : {{bill.id}}</li>
+      <li class="list-group-item">Description : {{bill.description}}</li>
+      <li class="list-group-item">Create : {{bill.createAt}}</li>
+    </ul>
+
+    <table class="table table-striped table-hover table-bordered my-3">
+
+      <thead>
+      <tr>
+        <th>Product</th>
+        <th>Price</th>
+        <th>Quantity</th>
+        <th>Total</th>
+      </tr>
+      </thead>
+
+      <tbody>
+      <tr *ngFor="let item of bill.items">
+
+        <td>{{item.product.name}}</td>
+        <td>{{item.product.price}}</td>
+        <td>{{item.amount}}</td>
+        <td>{{item.quantity}}</td>
+
+      </tr>
+      </tbody>
+
+    </table>
+
+    <h5 class="float-right">
+      <span>Total:</span> <span class="badge badge-secondary">{{bill.total}}</span>
+    </h5>
+
+    <div class="card border-info mb-4">
+
+      <div class="card card-header">
+        Observation
+      </div>
+
+      <div class="card card-body" style="max-height: 350px">
+        <p *ngIf="!bill.observation">There are no observation</p>
+        <p *ngIf="bill.observation">{{bill.observation}}</p>
+      </div>
+
+    </div>
+  </div>
+</div>

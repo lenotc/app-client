@@ -19,11 +19,12 @@
       <thead>
 
       <tr>
-        <th *ngIf="authService.hasRole('ROLE_USER')">#</th>
+        <th >#</th> <!-- *ngIf="authService.hasRole('ROLE_USER')" -->
         <th>Name</th>
         <th>Alias</th>
         <th>Email</th>
         <th>Created</th>
+        <th>New Bill</th>
         <th *ngIf="authService.hasRole('ROLE_ADMIN')">Edit</th>
         <th *ngIf="authService.hasRole('ROLE_ADMIN')">Delete</th>
       </tr>
@@ -51,6 +52,7 @@
         <td>{{client.alias | uppercase}}</td>
         <td>{{client.email}}</td>
         <td>{{client.createAt | date:"EEEE dd, MMMM yyyy"}}</td>
+        <td><button type="button" class="btn btn-success btn-sm" [routerLink]="['/bills/form', client.id]">Create Bill</button></td>
         <td *ngIf="authService.hasRole('ROLE_ADMIN')">
           <button class="btn btn-primary" [routerLink]="['/clients/form', client.id]">Edit</button>
         </td>

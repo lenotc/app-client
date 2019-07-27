@@ -51,6 +51,7 @@ export class FormComponent implements OnInit {
 
   updated(): void {
     console.log(this.client);
+    this.client.bills = null;
     this.clientService.updated(this.client)
       .subscribe(client => {
           swal.fire({title: 'The client has bee updated', text: `Client ${client.name} as updated success`, type: 'success'});

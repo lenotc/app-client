@@ -75,6 +75,48 @@
 
             </div>
 
+            <div class="row">
+              <button type="button" class="btn btn-success btn-sm" [routerLink]="['/bills/form', client.id]">New Bill</button>
+            </div>
+
+            <div class="row">
+
+              <div *ngIf="!client.bills.length" class="alert alert-info my-4">
+                There are not bill for the client {{client.name}} {{client.alias}}
+              </div>
+
+              <table *ngIf="client.bills.length" class="table table-bordered table-striped my-4">
+
+                <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Description</th>
+                  <th>Create</th>
+                  <th>Total</th>
+                  <th>Details</th>
+                  <th>Remove</th>
+                </tr>
+                </thead>
+
+                <tbody>
+                <tr *ngFor="let bill of client.bills">
+                  <td>{{bill.id}}</td>
+                  <td>{{bill.description}}</td>
+                  <td>{{bill.createAt | date}}</td>
+                  <td>{{bill.total}}</td>
+                  <td>
+                    <button class="btn btn-primary btn-sm"
+                            type="button" [routerLink]="['/bills', bill.id]">Show
+                    </button>
+                  </td>
+                  <td><button class="btn btn-danger btn-sm" (click)="delete(bill)">Delete</button></td>
+                </tr>
+                </tbody>
+
+              </table>
+
+            </div>
+
           </div>
 
         </div>
